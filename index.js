@@ -19,8 +19,10 @@ function convertString(input, regex, replace) {
   return result;
 };
 
-var gulpRegexReplace = function(regex, replace) {
-  if (replace == void 0) { replace = ''; }
+var gulpRegexReplace = function(options) {
+  if (options == void 0) { options = {}; }
+
+  if (options.replace == void 0) { options.replace = ''; }
 
   return through.obj(function (file, enc, callback) {
     if (file.isStream()) {
@@ -28,8 +30,8 @@ var gulpRegexReplace = function(regex, replace) {
     } else if (file.isBuffer()) {
       var contents = String(file.contents);
 
-      if (regex != void 0) {
-        contents = convertString(contents, new RegExp(regex, "g"), replace);
+      if (options.regex != void 0) {
+        contents = convertString(contents, new RegExp(options.regex, "g"), options.replace);
       }
 
       file.contents = new Buffer(contents);

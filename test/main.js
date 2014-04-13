@@ -17,7 +17,7 @@ function generateFile(contents) {
 }
 
 function expect_equals(regex, replace, input, output, done) {
-  var stream = obfuscate(regex, replace);
+  var stream = obfuscate({'regex': regex, 'replace': replace});
 
   stream.on('data', function(file) {
     String(file.contents).should.equal(output);
