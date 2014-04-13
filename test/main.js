@@ -74,12 +74,13 @@ describe('gulp-regex-replace', function() {
       });
 
       describe('and a replace function', function() {
-        var regex = 'Lorem';
+        var regex = '__v_[_A-Za-z0-9]+__';
 
         it('replaces any matching text with the result of the replace function', function(done) {
+          var modifiedInput = input.replace('Lorem', '__v_lorem__');
           var replace = function(v) { return 'DeLorean'; };
           var output = 'DeLorean ipsum dolor sit amet, consectetur adipisicing elit, ...';
-          expect_equals(regex, replace, input, output, done);
+          expect_equals(regex, replace, modifiedInput, output, done);
         });
 
         it('passes the variable matching the regular expression', function(done) {
