@@ -1,4 +1,4 @@
-# gulp-regex-replace [![NPM version][npm-image]][npm-url] [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]
+# gulp-regex-replace [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]
 
 > [gulp](http://gulpjs.com) plugin to replace your code using regular expressions.
 
