@@ -1,6 +1,6 @@
-# [gulp](http://gulpjs.com)-regex-replace [![NPM version][npm-image]][npm-url] [![Build Status](https://travis-ci.org/mikegroseclose/gulp-regex-replace.svg?branch=master)](https://travis-ci.org/mikegroseclose/gulp-regex-replace)
+# gulp-regex-replace [![NPM version][npm-image]][npm-url] [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]
 
-> Replace your code using regular expressions.
+> [gulp](http://gulpjs.com) plugin to replace your code using regular expressions.
 
 ## Install
 
@@ -50,3 +50,9 @@ The input to that method will be the string matching the regular expression.
 ## License
 
 [MIT](http://opensource.org/licenses/MIT) © Mike Groseclose
+
+[npm-url]: https://npmjs.org/package/gulp-regex-replace
+[npm-image]: https://badge.fury.io/js/gulp-regex-replace.png
+
+[travis-url]: http://travis-ci.org/mikegroseclose/gulp-regex-replace
+[travis-image]: https://secure.travis-ci.org/mikegroseclose/gulp-regex-replace.png?branch=master
