@@ -1,4 +1,4 @@
-# [gulp](http://gulpjs.com)-regex-replace [![Build Status](https://travis-ci.org/mikegroseclose/gulp-regex-replace.svg?branch=master)](https://travis-ci.org/mikegroseclose/gulp-regex-replace)
+# [gulp](http://gulpjs.com)-regex-replace [![NPM version][npm-image]][npm-url] [![Build Status](https://travis-ci.org/mikegroseclose/gulp-regex-replace.svg?branch=master)](https://travis-ci.org/mikegroseclose/gulp-regex-replace)
 
 > Replace your code using regular expressions.
 
