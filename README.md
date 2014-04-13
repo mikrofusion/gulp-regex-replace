@@ -27,7 +27,9 @@ gulp.task('default', function () {
 #### options.regex
 
 Type: `String`
-Default: ``
+
+Default: ` `
+
 Values: `word`, `__v_[_A-Za-z0-9]+__`, `...`
 
 The regular expresion used to match words that should be replaced.
@@ -35,7 +37,9 @@ The regular expresion used to match words that should be replaced.
 #### options.replace
 
 Type: `String` or `Method`
+
 Default: `''`
+
 Values: `DeLorean`, `Lorem`, `function(match) { return 'DeLorean'; }`, `...`
 
 The replace string or method.
