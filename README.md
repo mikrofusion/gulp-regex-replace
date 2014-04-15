@@ -30,9 +30,12 @@ Type: `String`
 
 Default: ` `
 
-Values: `word`, `__v_[_A-Za-z0-9]+__`, `...`
+Values: `word`, `__v_[_A-Za-z0-9]+__`, `.(abc).`,  `...`
 
 The regular expresion used to match words that should be replaced.
+
+If the regular expression contains groups (denoted by a value within parenthesis)
+then only the groups will be replaced rather than the entire matching string.
 
 #### options.replace
 
