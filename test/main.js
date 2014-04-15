@@ -63,10 +63,21 @@ describe('gulp-regex-replace', function() {
         });
       });
 
-      describe('and a replace string', function() {
+      describe('and a replace string without regex groups', function() {
         var regex = 'consectetur adipisicing elit, ...';
         var replace = '...';
         var output = input.replace(regex, replace);
+
+        it('replaces any matching text with the replace string', function(done) {
+          expect_equals(regex, replace, input, output, done);
+        });
+      });
+
+      describe('and a replace string with regex groups', function() {
+        var input = 'var abc = xyz; var xyz;';
+        var regex = 'var ([_A-Za-z0-9]+)[ ,;]';
+        var replace = 'x';
+        var output = 'var x = x; var x;';
 
         it('replaces any matching text with the replace string', function(done) {
           expect_equals(regex, replace, input, output, done);

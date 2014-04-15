@@ -5,16 +5,28 @@ var gutil = require('gulp-util');
 
 function convertString(input, regex, replace) {
   var result = input;
-  var variables = input.match(regex);
 
+  var match = regex.exec(input);
 
-  if (variables != null) variables.forEach(function(v) {
-    var r = replace;
-    if (typeof(replace) == 'function') {
-      r = replace(v);
+  while (match != null && match[0] != '') {
+    var v, r, index;
+    r = replace;
+
+    if (match.length == 1) {
+      index = 0;
+    } else { index = 1; }
+
+    while (index < match.length) {
+      v = match[index];
+      if (typeof(replace) == 'function') {
+        r = replace(v);
+      }
+      result = result.replace(new RegExp(v, 'g'), r);
+      index++;
     }
-    result = result.replace(v, r);
-  });
+
+    match = regex.exec(input);
+  }
 
   return result;
 };
