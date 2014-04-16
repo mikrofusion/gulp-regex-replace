@@ -25,7 +25,7 @@ function convertString(input, regex, replace) {
       index++;
     }
 
-    match = regex.exec(input);
+    match = regex.exec(result);
   }
 
   return result;
