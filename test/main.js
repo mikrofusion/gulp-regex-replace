@@ -1,6 +1,6 @@
 'use strict';
 
-var obfuscate = require('../'),
+var replace = require('../'),
     es        = require('event-stream'),
     gutil     = require('gulp-util'),
     should    = require('should');
@@ -16,8 +16,8 @@ function generateFile(contents) {
   });
 }
 
-function expect_equals(regex, replace, input, output, done) {
-  var stream = obfuscate({'regex': regex, 'replace': replace});
+function expect_equals(options, input, output, done) {
+  var stream = replace(options);
 
   stream.on('data', function(file) {
     String(file.contents).should.equal(output);
@@ -37,7 +37,7 @@ describe('gulp-regex-replace', function() {
     var output = input;
 
     it('does nothing', function(done) {
-      expect_equals(regex, replace, input, output, done);
+      expect_equals({regex: regex, replace: replace}, input, output, done);
     });
   });
 
@@ -48,7 +48,7 @@ describe('gulp-regex-replace', function() {
       var output = input;
 
       it('does nothing', function(done) {
-        expect_equals(regex, replace, input, output, done);
+        expect_equals({regex: regex, replace: replace}, input, output, done);
       });
     });
 
@@ -59,46 +59,74 @@ describe('gulp-regex-replace', function() {
         var output = '';
 
         it('removes matching text', function(done) {
-          expect_equals(regex, replace, input, output, done);
+          expect_equals({regex: regex, replace: replace}, input, output, done);
         });
       });
+    });
 
-      describe('and a replace string without regex groups', function() {
-        var regex = 'consectetur adipisicing elit, ...';
-        var replace = '...';
-        var output = input.replace(regex, replace);
+    describe('and a replace string without regex groups', function() {
+      var regex = 'consectetur adipisicing elit, ...';
+      var replace = '...';
+      var output = input.replace(regex, replace);
 
-        it('replaces any matching text with the replace string', function(done) {
-          expect_equals(regex, replace, input, output, done);
-        });
+      it('replaces any matching text with the replace string', function(done) {
+        expect_equals({regex: regex, replace: replace}, input, output, done);
+      });
+    });
+
+    describe('and a replace function', function() {
+      var regex = '__v_[_A-Za-z0-9]+__';
+
+      it('replaces any matching text with the result of the replace function', function(done) {
+        var modifiedInput = input.replace('Lorem', '__v_lorem__');
+        var replace = function(v) { return 'DeLorean'; };
+        var output = 'DeLorean ipsum dolor sit amet, consectetur adipisicing elit, ...';
+        expect_equals({regex: regex, replace: replace}, modifiedInput, output, done);
       });
 
-      describe('and a replace string with regex groups', function() {
-        var input = 'var xy; var abc = xyz; var xyz;';
-        var regex = 'var ([_A-Za-z0-9]+)[ ,;]';
-        var replace = 'x';
-        var output = 'var x; var x = x; var x;';
-
-        it('replaces any matching text with the replace string', function(done) {
-          expect_equals(regex, replace, input, output, done);
-        });
+      it('passes the variable matching the regular expression', function(done) {
+        var replace = function(v) { return v; };
+        var output = input;
+        expect_equals({regex: regex, replace: replace}, input, output, done);
       });
+    });
 
-      describe('and a replace function', function() {
-        var regex = '__v_[_A-Za-z0-9]+__';
+    describe('and a replace string with regex groups', function() {
+      var input = 'var xy; var abc = xyz; var xyz;';
+      var regex = 'var ([_A-Za-z0-9]+)[ ,;]';
+      var replace = 'x';
+      var output = 'var x; var x = x; var x;';
 
-        it('replaces any matching text with the result of the replace function', function(done) {
-          var modifiedInput = input.replace('Lorem', '__v_lorem__');
-          var replace = function(v) { return 'DeLorean'; };
-          var output = 'DeLorean ipsum dolor sit amet, consectetur adipisicing elit, ...';
-          expect_equals(regex, replace, modifiedInput, output, done);
-        });
+      it('replaces any matching text with the replace string', function(done) {
+        expect_equals({regex: regex, replace: replace}, input, output, done);
+      });
+    });
 
-        it('passes the variable matching the regular expression', function(done) {
-          var replace = function(v) { return v; };
-          var output = input;
-          expect_equals(regex, replace, input, output, done);
-        });
+    describe('when given an array of options', function() {
+      var input = 'var xy; var abc = xy;';
+      var regex = 'xy';
+      var regex1 = 'abc';
+      var replace = 'x';
+      var replace1 = 'y';
+      var output = 'var x; var y = x;';
+
+      it('replaces any matching text matching the regular expression for each option in the array', function(done) {
+        expect_equals([{regex: regex, replace: replace},
+                       {regex: regex1, replace: replace1}
+                      ], input, output, done);
+
+      });
+    });
+
+    // var regex = d 0;//'var ([_A-Za-z0-9]+)[ ,;=]';
+    // var regex1 = '[,;= ]([a-zA-Z_$][\w$]*)[,;= ]';//var[\w]*[ =,;]([A-Za-z0-9]+)[,=; ]';
+    describe('when the regex option is an array', function() {
+      var input = 'var xy, ab = xy, abc = 0;';
+      var options = { regex: [ 'var(.+;)', '([a-zA-Z_$]+)[, =;]' ], replace: 'v' };
+      var output = 'var v, v = v, v = 0;'
+
+      it('uses the regex on the previous regex in the array to find the replace string', function(done) {
+        expect_equals(options, input, output, done);
       });
     });
   });

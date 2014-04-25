@@ -3,10 +3,23 @@
 var through = require('through2');
 var gutil = require('gulp-util');
 
-function convertString(input, regex, replace) {
+function convertString(input, regexOptions, replace) {
+  console.log('--->' + regexOptions);
+
+
+  if(!(regexOptions instanceof Array)) {
+    regexOptions = [regexOptions];
+  }
+
+  if (regexOptions[0] == void 0) { return input; }
+
   var result = input;
 
+  var regex = new RegExp(regexOptions.shift(), "g");
+
   var match = regex.exec(input);
+
+    console.log('matching: ' + result);
 
   while (match != null && match[0] != '') {
     var v, r, index;
@@ -16,12 +29,23 @@ function convertString(input, regex, replace) {
       index = 0;
     } else { index = 1; }
 
+    console.log('match: ' + match);
+
     while (index < match.length) {
       v = match[index];
-      if (typeof(replace) == 'function') {
-        r = replace(v);
+
+      console.log('replacing: ' + v + ' ' + regexOptions.length);
+
+      if(regexOptions.length == 0) {
+        if (typeof(replace) == 'function') {
+          r = replace(v);
+        }
+
+        result = result.replace(new RegExp(v, 'g'), r);
+      } else {
+        result = convertString(input, regexOptions, replace);
       }
-      result = result.replace(new RegExp(v, 'g'), r);
+
       index++;
     }
 
@@ -32,9 +56,14 @@ function convertString(input, regex, replace) {
 };
 
 var gulpRegexReplace = function(options) {
-  if (options == void 0) { options = {}; }
+  if(!(options instanceof Array)) {
+    options = [options];
+  }
 
-  if (options.replace == void 0) { options.replace = ''; }
+  options.forEach(function(element, index, array) {
+    if (element == void 0) { element = {}; }
+    if (element.replace == void 0) { element.replace = ''; }
+  });
 
   return through.obj(function (file, enc, callback) {
     if (file.isStream()) {
@@ -42,9 +71,10 @@ var gulpRegexReplace = function(options) {
     } else if (file.isBuffer()) {
       var contents = String(file.contents);
 
-      if (options.regex != void 0) {
-        contents = convertString(contents, new RegExp(options.regex, "g"), options.replace);
-      }
+      options.forEach(function(element, index, array) {
+        contents = convertString(contents, element.regex, element.replace);
+        console.log(contents);
+      });
 
       file.contents = new Buffer(contents);
     }
