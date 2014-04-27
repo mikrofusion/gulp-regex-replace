@@ -26,13 +26,15 @@ gulp.task('default', function () {
 
 #### options.regex
 
-Type: `String`
+Type: `String or Array of Strings`
 
 Default: ` `
 
-Values: `word`, `__v_[_A-Za-z0-9]+__`, `.(abc).`,  `...`
+Values: `word`, `__v_[_A-Za-z0-9]+__`, `.(abc).`, `[ 'var(.*?;)', '([a-zA-Z_$]+)[, =;]' ]`, `...`
 
-The regular expresion used to match words that should be replaced.
+The regular expresion (or array of regular expressions) used to match words to be
+replaced.  If an array is provided then the string to be replaced will be the cumulative
+result of the regular expressions.
 
 If the regular expression contains groups (denoted by a value within parenthesis)
 then only the groups will be replaced rather than the entire matching string.

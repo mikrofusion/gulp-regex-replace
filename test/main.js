@@ -118,12 +118,10 @@ describe('gulp-regex-replace', function() {
       });
     });
 
-    // var regex = d 0;//'var ([_A-Za-z0-9]+)[ ,;=]';
-    // var regex1 = '[,;= ]([a-zA-Z_$][\w$]*)[,;= ]';//var[\w]*[ =,;]([A-Za-z0-9]+)[,=; ]';
     describe('when the regex option is an array', function() {
-      var input = 'var xy, ab = xy, abc = 0;';
-      var options = { regex: [ 'var(.+;)', '([a-zA-Z_$]+)[, =;]' ], replace: 'v' };
-      var output = 'var v, v = v, v = 0;'
+      var input = 'var xy, ab = xy, abc = 0; test.  var test;';
+      var options = { regex: [ 'var(.*?;)', '([a-zA-Z_$]+)[, =;]' ], replace: 'v' };
+      var output = 'var v, v = v, v = 0; v.  var v;'
 
       it('uses the regex on the previous regex in the array to find the replace string', function(done) {
         expect_equals(options, input, output, done);

@@ -3,10 +3,45 @@
 var through = require('through2');
 var gutil = require('gulp-util');
 
+function findMatch(input, regexOptions) {
+  var result = [input];
+  var regex;
+
+  while((regex = regexOptions.shift()) != null) {
+    result = findSingleMatch(input, regex);
+    input = result.join(' ');
+  }
+  return result;
+}
+
+function findSingleMatch(input, regex) {
+  var result = [];
+
+  if (regex == void 0) { return null; }
+
+  regex = new RegExp(regex, "g");
+  var match = regex.exec(input);
+
+  while (match != null && match[0] != '') {
+    var index, v;
+
+    if (match.length == 1) {
+      index = 0;
+    } else { index = 1; }
+
+    while (index < match.length) {
+      v = match[index];
+      result.push(v)
+
+      index++;
+    }
+
+    match = regex.exec(input);
+  }
+  return result;
+}
+
 function convertString(input, regexOptions, replace) {
-  console.log('--->' + regexOptions);
-
-
   if(!(regexOptions instanceof Array)) {
     regexOptions = [regexOptions];
   }
@@ -14,42 +49,23 @@ function convertString(input, regexOptions, replace) {
   if (regexOptions[0] == void 0) { return input; }
 
   var result = input;
+  var matches = findMatch(input, regexOptions);
 
-  var regex = new RegExp(regexOptions.shift(), "g");
-
-  var match = regex.exec(input);
-
-    console.log('matching: ' + result);
-
-  while (match != null && match[0] != '') {
-    var v, r, index;
-    r = replace;
-
-    if (match.length == 1) {
-      index = 0;
-    } else { index = 1; }
-
-    console.log('match: ' + match);
-
-    while (index < match.length) {
-      v = match[index];
-
-      console.log('replacing: ' + v + ' ' + regexOptions.length);
-
-      if(regexOptions.length == 0) {
-        if (typeof(replace) == 'function') {
-          r = replace(v);
-        }
-
-        result = result.replace(new RegExp(v, 'g'), r);
-      } else {
-        result = convertString(input, regexOptions, replace);
+  if (matches != null) {
+    matches.forEach(function(element, index, array) {
+      var r = replace;
+      if (typeof(replace) == 'function') {
+        r = replace(element);
       }
 
-      index++;
-    }
+      var regexReplace = new RegExp(element, 'g');
+      result = result.replace(regexReplace, r);
 
-    match = regex.exec(result);
+      // also replace all future replace strings
+      matches.forEach(function(element, index, array) {
+        array[index] = element.replace(regexReplace, r);
+      });
+    });
   }
 
   return result;
@@ -73,7 +89,7 @@ var gulpRegexReplace = function(options) {
 
       options.forEach(function(element, index, array) {
         contents = convertString(contents, element.regex, element.replace);
-        console.log(contents);
+        console.log('contents' + contents);
       });
 
       file.contents = new Buffer(contents);
