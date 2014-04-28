@@ -41,6 +41,19 @@ function findSingleMatch(input, regex) {
   return result;
 }
 
+function isWord(str) {
+  if (str == (new RegExp('\w', 'g').exec(str))) {
+    return true;
+  }
+  //if ((str.indexOf(' ') === -1) &&
+      //(str.indexOf(',') === -1) &&
+      //(str.indexOf('=') === -1) &&
+      //(str.indexOf(';' === -1))) {
+    //return true;
+  //}
+  return false;
+}
+
 function convertString(input, regexOptions, replace) {
   if(!(regexOptions instanceof Array)) {
     regexOptions = [regexOptions];
@@ -58,8 +71,17 @@ function convertString(input, regexOptions, replace) {
         r = replace(element);
       }
 
-      var regexReplace = new RegExp(element, 'g');
+      var regexReplace;
+      console.log('*****' + element + '******');
+
+      if (isWord(element)) {
+        console.log('here---------------------');
+        regexReplace = new RegExp('\\b' + element + '\\b', 'g');
+      } else {
+        regexReplace = new RegExp(element, 'g');
+      }
       result = result.replace(regexReplace, r);
+      console.log('result ' + result);
 
       // also replace all future replace strings
       matches.forEach(function(element, index, array) {
@@ -89,7 +111,6 @@ var gulpRegexReplace = function(options) {
 
       options.forEach(function(element, index, array) {
         contents = convertString(contents, element.regex, element.replace);
-        console.log('contents' + contents);
       });
 
       file.contents = new Buffer(contents);
