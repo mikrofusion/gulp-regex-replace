@@ -129,8 +129,8 @@ describe('gulp-regex-replace', function() {
     });
 
     describe('when the regex option is an array', function() {
-      var input = 'var viable1; var yy = xy; abc = 0; test.  var test;';
-      var options = { regex: [ 'var (.*?;)', { include: '([a-zA-Z0-9_$]+)[, =;]', exclude: '=[ ]*?([a-zA-Z0-9_$]+)[, =;]' } ], replace: 'v' };
+      var input = 'var viable_1; var yy = xy; abc = 0; test.  var test;';
+      var options = { regex: [ 'var (.*?;)', { include: '([a-zA-Z0-9\__$]+)[, =;]', exclude: '=[ ]*?([a-zA-Z0-9\__$]+)[, =;]' } ], replace: 'v' };
       var output = 'var v; var v = xy; abc = 0; v.  var v;'
 
       it('uses the regex on the previous regex in the array to find the replace string', function(done) {
