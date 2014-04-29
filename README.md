@@ -56,6 +56,13 @@ The replace string or method.
 If a method is given then the result of that method will be the replace string.
 The input to that method will be the string matching the regular expression.
 
+#### options.exclude
+
+Type: `String` or `Array of Strings`
+
+This is a single or array of regular expression strings which will override the default logic and
+prevent matching strings from being replaced.
+
 ## License
 
 [MIT](http://opensource.org/licenses/MIT) © Mike Groseclose

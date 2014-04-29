@@ -138,5 +138,14 @@ describe('gulp-regex-replace', function() {
       });
     });
 
+    describe('when given a a single (or array) of exclude regex strings', function() {
+      var input = 'var do_not_replace; var yy = xy; var dnr; abc = 0; test.  var test;';
+      var options = { regex: [ 'var (.*?;)', { include: '([a-zA-Z0-9\__$]+)[, =;]', exclude: '=[ ]*?([a-zA-Z0-9\__$]+)[, =;]' } ], replace: 'v', exclude: ['do_not_replace', 'dnr'] };
+      var output = 'var do_not_replace; var v = xy; var dnr; abc = 0; v.  var v;'
+
+      it('it will not replace strings matching the the exclude regular expressions', function(done) {
+        expect_equals(options, input, output, done);
+      });
+    });
   });
 });

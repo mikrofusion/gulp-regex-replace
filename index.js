@@ -73,10 +73,23 @@ function isWord(str) {
   return false;
 }
 
-function convertString(input, regexOptions, replace) {
-  if(!(regexOptions instanceof Array)) {
-    regexOptions = [regexOptions];
-  }
+function shouldExclude(element, globalExclude) {
+  var result = false;
+  globalExclude.forEach(function(exclude) {
+    if(exclude != void 0 && exclude != null && exclude != '') {
+      var regex = new RegExp(exclude, 'g');
+      if (element == regex.exec(element)) {
+        result = true;
+      }
+    }
+  });
+
+  return result;
+}
+
+function convertString(input, regexOptions, replace, globalExclude) {
+  if(!(regexOptions instanceof Array)) { regexOptions = [regexOptions]; }
+  if(!(globalExclude instanceof Array)) { globalExclude = [globalExclude]; }
 
   if (regexOptions[0] == void 0) { return input; }
 
@@ -92,17 +105,19 @@ function convertString(input, regexOptions, replace) {
 
       var regexReplace;
 
-      if (isWord(element)) {
-        regexReplace = new RegExp('\\b' + element + '\\b', 'g');
-      } else {
-        regexReplace = new RegExp(element, 'g');
-      }
-      result = result.replace(regexReplace, r);
+      if (!shouldExclude(element, globalExclude)) {
+        if (isWord(element)) {
+          regexReplace = new RegExp('\\b' + element + '\\b', 'g');
+        } else {
+          regexReplace = new RegExp(element, 'g');
+        }
+        result = result.replace(regexReplace, r);
 
-      // also replace all future replace strings
-      matches.forEach(function(element, index, array) {
-        array[index] = element.replace(regexReplace, r);
-      });
+        // also replace all future replace strings
+        matches.forEach(function(element, index, array) {
+          array[index] = element.replace(regexReplace, r);
+        });
+      }
     });
   }
 
@@ -126,7 +141,7 @@ var gulpRegexReplace = function(options) {
       var contents = String(file.contents);
 
       options.forEach(function(element, index, array) {
-        contents = convertString(contents, element.regex, element.replace);
+        contents = convertString(contents, element.regex, element.replace, element.exclude);
       });
 
       file.contents = new Buffer(contents);
