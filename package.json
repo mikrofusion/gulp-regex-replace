@@ -1,6 +1,6 @@
 {
   "name": "gulp-regex-replace",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Replace your code using regular expressions.",
   "keywords": [
     "gulpplugin",

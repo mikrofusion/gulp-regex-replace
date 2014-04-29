@@ -78,8 +78,20 @@ function shouldExclude(element, globalExclude) {
   globalExclude.forEach(function(exclude) {
     if(exclude != void 0 && exclude != null && exclude != '') {
       var regex = new RegExp(exclude, 'g');
-      if (element == regex.exec(element)) {
-        result = true;
+      var match = regex.exec(element);
+      var index;
+
+      if (match != null) {
+        if (match.length == 1) {
+          index = 0;
+        } else { index = 1; }
+
+        while (index < match.length) {
+          if (element == match[index]) {
+            result = true;
+          }
+          index++;
+        }
       }
     }
   });
