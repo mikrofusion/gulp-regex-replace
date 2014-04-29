@@ -63,7 +63,11 @@ function findSingleMatch(input, regex) {
 }
 
 function isWord(str) {
-  if (str == (new RegExp('\w', 'g').exec(str))) {
+  if ((str.indexOf(' ') === -1) &&
+      (str.indexOf('.') === -1) &&
+      (str.indexOf(',') === -1) &&
+      (str.indexOf('=') === -1) &&
+      (str.indexOf(';') === -1)) {
     return true;
   }
   return false;
