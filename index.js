@@ -14,13 +14,15 @@ function findMatch(input, regexOptions) {
   return result;
 }
 
-function findSingleMatch(input, regex) {
+function regexMatch(input, regex) {
   var result = [];
 
-  if (regex == void 0) { return null; }
+  if (regex == void 0) {
+    return null;
+  }
 
-  regex = new RegExp(regex, "g");
-  var match = regex.exec(input);
+  var regexp = new RegExp(regex, "g");
+  var match = regexp.exec(input);
 
   while (match != null && match[0] != '') {
     var index, v;
@@ -32,25 +34,38 @@ function findSingleMatch(input, regex) {
     while (index < match.length) {
       v = match[index];
       result.push(v)
-
       index++;
     }
 
-    match = regex.exec(input);
+    match = regexp.exec(input);
   }
+
   return result;
+}
+
+function findSingleMatch(input, regex) {
+  var result = [];
+
+  if (regex == void 0) { return null; }
+
+  var include = regex, exclude;
+  if (regex.exclude != void 0) { exclude = regex.exclude; }
+  if (regex.include != void 0) { include = regex.include; }
+
+  var excludeList = regexMatch(input, exclude);
+  var includeList = regexMatch(input, include);
+
+  if(excludeList != null) {
+    return includeList.filter(function(element) {return excludeList.indexOf(element) < 0;});
+  } else {
+    return includeList;
+  }
 }
 
 function isWord(str) {
   if (str == (new RegExp('\w', 'g').exec(str))) {
     return true;
   }
-  //if ((str.indexOf(' ') === -1) &&
-      //(str.indexOf(',') === -1) &&
-      //(str.indexOf('=') === -1) &&
-      //(str.indexOf(';' === -1))) {
-    //return true;
-  //}
   return false;
 }
 
@@ -72,16 +87,13 @@ function convertString(input, regexOptions, replace) {
       }
 
       var regexReplace;
-      console.log('*****' + element + '******');
 
       if (isWord(element)) {
-        console.log('here---------------------');
         regexReplace = new RegExp('\\b' + element + '\\b', 'g');
       } else {
         regexReplace = new RegExp(element, 'g');
       }
       result = result.replace(regexReplace, r);
-      console.log('result ' + result);
 
       // also replace all future replace strings
       matches.forEach(function(element, index, array) {

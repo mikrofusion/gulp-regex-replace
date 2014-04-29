@@ -26,7 +26,7 @@ gulp.task('default', function () {
 
 #### options.regex
 
-Type: `String or Array of Strings`
+Type: `String`, `Array of Strings`, or `Key/value with 'include' and 'exclude' as keys`
 
 Default: ` `
 
@@ -38,6 +38,10 @@ result of the regular expressions.
 
 If the regular expression contains groups (denoted by a value within parenthesis)
 then only the groups will be replaced rather than the entire matching string.
+
+Regex may also be key value pairs 'include' and 'exclude' indicating the regular expression matches to
+include or exclude.  e.g. `{ include: '([a-zA-Z0-9_$]+)[, =;]', exclude: '=[ ]*?([a-zA-Z0-9_$]+)[, =;]' }`
+will replace `abc` in `var abc` but exclude `def` in `var abc = def`.
 
 #### options.replace
 
