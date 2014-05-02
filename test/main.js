@@ -5,6 +5,8 @@ var replace = require('../'),
     gutil     = require('gulp-util'),
     should    = require('should');
 
+//replace.debug = true;
+
 function generateFile(contents) {
   if (contents == void 0) {contents = ''; }
 

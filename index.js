@@ -3,6 +3,12 @@
 var through = require('through2');
 var gutil = require('gulp-util');
 
+function debug(str) {
+  if(gulpRegexReplace.debug == true) {
+    console.log(str);
+  }
+}
+
 function findMatch(input, regexOptions) {
   var result = [input];
   var regex;
@@ -11,6 +17,7 @@ function findMatch(input, regexOptions) {
     result = findSingleMatch(input, regex);
     input = result.join(' ');
   }
+
   return result;
 }
 
@@ -108,6 +115,8 @@ function convertString(input, regexOptions, replace, globalExclude) {
   var result = input;
   var matches = findMatch(input, regexOptions);
 
+  debug('matches: ' + result);
+
   if (matches != null) {
     matches.forEach(function(element, index, array) {
       var r = replace;
@@ -119,8 +128,10 @@ function convertString(input, regexOptions, replace, globalExclude) {
 
       if (!shouldExclude(element, globalExclude)) {
         if (isWord(element)) {
+          debug('replacing word: ' + element + ' with ' + r);
           regexReplace = new RegExp('\\b' + element + '\\b', 'g');
         } else {
+          debug('replacing: ' + element + ' with ' + r);
           regexReplace = new RegExp(element, 'g');
         }
         result = result.replace(regexReplace, r);
