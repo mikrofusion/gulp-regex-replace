@@ -22,7 +22,7 @@ gulp.task('default', function () {
 
 ## Example
 
-To see how gulp-regex-replace is being used in other projects checkout [gulp-obfuscate](//github.com/mikegroseclose/gulp-obfuscate).
+To see how gulp-regex-replace is being used in other projects checkout [gulp-obfuscate](https://github.com/mikegroseclose/gulp-obfuscate).
 
 ## API
 
