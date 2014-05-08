@@ -115,8 +115,6 @@ function convertString(input, regexOptions, replace, globalExclude) {
   var result = input;
   var matches = findMatch(input, regexOptions);
 
-  debug('matches: ' + result);
-
   if (matches != null) {
     matches.forEach(function(element, index, array) {
       var r = replace;
@@ -157,13 +155,23 @@ var gulpRegexReplace = function(options) {
     if (element.replace == void 0) { element.replace = ''; }
   });
 
-  return through.obj(function (file, enc, callback) {
-    if (file.isStream()) {
+  return through.obj(function(file, enc, callback) {
+    if (!('contents' in file)) {
+      this.push(file);
+      return callback();
+    } else if (file.isNull()) {
+      this.push(file);
+      return callback();
+    } else if (file.isStream()) {
       throw new gutil.PluginError('gulp-regex-replace', 'streams not implemented');
     } else if (file.isBuffer()) {
       var contents = String(file.contents);
 
       options.forEach(function(element, index, array) {
+        if(contents == null) {
+          throw new gutil.PluginError('gulp-regex-replace', 'contents is null');
+        }
+
         contents = convertString(contents, element.regex, element.replace, element.exclude);
       });
 
