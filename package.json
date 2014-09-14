@@ -11,16 +11,15 @@
     "preprocessor",
     "obfuscate"
   ],
-  "homepage": "http://github.com/mikegroseclose/gulp-regex-replace",
+  "homepage": "http://github.com/mikrofusion/gulp-regex-replace",
   "author": {
     "name": "Mike Groseclose",
     "email": "mikegroseclose@gmail.com",
-    "url": "http://mikegroseclose.com"
   },
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mikegroseclose/gulp-regex-replace.git"
+    "url": "git://github.com/mikrofusion/gulp-regex-replace.git"
   },
   "scripts": {
     "test": "mocha -R spec"
@@ -39,6 +38,6 @@
   },
   "licenses": [{
     "type": "MIT",
-    "url": "http://github.com/mikegroseclose/gulp-regex-replace/raw/master/LICENSE"
+    "url": "http://github.com/mikrofusion/gulp-regex-replace/raw/master/LICENSE"
   }]
 }

@@ -22,7 +22,7 @@ gulp.task('default', function () {
 
 ## Example
 
-To see how gulp-regex-replace is being used in other projects checkout [gulp-obfuscate](https://github.com/mikegroseclose/gulp-obfuscate).
+To see how gulp-regex-replace is being used in other projects checkout [gulp-obfuscate](https://github.com/mikrofusion/gulp-obfuscate).
 
 ## API
 
@@ -74,5 +74,5 @@ prevent matching strings from being replaced.
 [npm-url]: https://npmjs.org/package/gulp-regex-replace
 [npm-image]: https://badge.fury.io/js/gulp-regex-replace.png
 
-[travis-url]: http://travis-ci.org/mikegroseclose/gulp-regex-replace
-[travis-image]: https://secure.travis-ci.org/mikegroseclose/gulp-regex-replace.png?branch=master
+[travis-url]: http://travis-ci.org/mikrofusion/gulp-regex-replace
+[travis-image]: https://secure.travis-ci.org/mikrofusion/gulp-regex-replace.png?branch=master
