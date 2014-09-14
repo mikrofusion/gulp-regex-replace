@@ -14,7 +14,7 @@
   "homepage": "http://github.com/mikrofusion/gulp-regex-replace",
   "author": {
     "name": "Mike Groseclose",
-    "email": "mikegroseclose@gmail.com",
+    "email": "mikegroseclose@gmail.com"
   },
   "main": "index.js",
   "repository": {
