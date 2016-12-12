@@ -28,21 +28,23 @@ function regexMatch(input, regex) {
     return null;
   }
 
-  var regexp = new RegExp(regex, "g");
-  var match = regexp.exec(input);
+  if (regex) {
+    var regexp = new RegExp(regex, "g");
+    var match = regexp.exec(input);
 
-  while (match != null && match[0] != '') {
-    var index, v;
+    while (match != null && match[0] != '') {
+      var index, v;
 
-    if (match.length == 1) {
-      index = 0;
-    } else { index = 1; }
+      if (match.length == 1) {
+        index = 0;
+      } else { index = 1; }
 
-    while (index < match.length) {
-      v = match[index];
-      result.push(v)
-      index++;
-    }
+      while (index < match.length) {
+        v = match[index];
+        result.push(v)
+        index++;
+      }
+  }
 
     match = regexp.exec(input);
   }
